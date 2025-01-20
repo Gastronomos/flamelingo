@@ -521,6 +521,19 @@ wheels = [
 ]
 
 [[package]]
+name = "faker"
+version = "33.3.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "python-dateutil" },
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/9c/50/48ab6ba3f07ee7d0eac367695aeb8bc9eb9c3debc0445a67cd07e2d62b44/faker-33.3.1.tar.gz", hash = "sha256:49dde3b06a5602177bc2ad013149b6f60a290b7154539180d37b6f876ae79b20", size = 1854895 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/c2/01/6acc8b4dba4154cd93b444382a9ad3c099557aac577bdc7d66373e0a0c68/Faker-33.3.1-py3-none-any.whl", hash = "sha256:ac4cf2f967ce02c898efa50651c43180bd658a7707cfd676fcc5410ad1482c03", size = 1894842 },
+]
+
+[[package]]
 name = "fastapi"
 version = "0.115.6"
 source = { registry = "https://pypi.org/simple" }
@@ -535,18 +548,15 @@ wheels = [
 ]
 
 [[package]]
-name = "fastapi-sso"
-version = "0.17.0"
+name = "fastapi-storages"
+version = "0.3.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "fastapi" },
-    { name = "httpx" },
-    { name = "oauthlib" },
-    { name = "pydantic", extra = ["email"] },
+    { name = "boto3" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/91/7b/6f3c6ca695e5850ebbea7b5c31f3a85eab6da8d54db4a5fe2a20cc4fd70b/fastapi_sso-0.17.0.tar.gz", hash = "sha256:fa0e46a2a935999ea98874669c1925f4ef02d023d95ed703c8b126419275c627", size = 17225 }
+sdist = { url = "https://files.pythonhosted.org/packages/68/8a/e56d4ade659994c2989091b96642f10554ec3914a40de56a556ffdbbcd26/fastapi_storages-0.3.0.tar.gz", hash = "sha256:f784335fff9cd163b783e842da04c6d9ed1b306fce8995fda109b170d6d453df", size = 6706 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/e1/ba/ddf5c2d7fafb503d64765b485518ad5cd49a08dfab39bdb3500d494f10f5/fastapi_sso-0.17.0-py3-none-any.whl", hash = "sha256:5acadc7e46d7a9bd7974c7046c472048dc93fb2bf7b2d496550c012fc98d0f0f", size = 25910 },
+    { url = "https://files.pythonhosted.org/packages/a7/b5/3fb94b4f329fb2f83ffa54e6941b769deaaaa77f63a9fe70905219dd7339/fastapi_storages-0.3.0-py3-none-any.whl", hash = "sha256:91adb41a80fdef2a84c0f8244c27ade7ff8bd5db9b7fa95c496c06c03e192477", size = 9725 },
 ]
 
 [[package]]
@@ -566,6 +576,30 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/2c/52/2821d3e95a92567d38f98a33d1ef89302aa3448866bf45ff19a48a5f28f8/fastapi_users-14.0.1-py3-none-any.whl", hash = "sha256:074df59676dccf79412d2880bdcb661ab1fabc2ecec1f043b4e6a23be97ed9e1", size = 38717 },
 ]
 
+[package.optional-dependencies]
+oauth = [
+    { name = "httpx-oauth" },
+]
+redis = [
+    { name = "redis" },
+]
+sqlalchemy = [
+    { name = "fastapi-users-db-sqlalchemy" },
+]
+
+[[package]]
+name = "fastapi-users-db-sqlalchemy"
+version = "7.0.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "fastapi-users" },
+    { name = "sqlalchemy", extra = ["asyncio"] },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/87/12/bc9e6146ae31564741cefc87ee6e37fa5b566933f0afe8aa030779d60e60/fastapi_users_db_sqlalchemy-7.0.0.tar.gz", hash = "sha256:6823eeedf8a92f819276a2b2210ef1dcfd71fe8b6e37f7b4da8d1c60e3dfd595", size = 10877 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/a6/08/9968963c1fb8c34627b7f1fbcdfe9438540f87dc7c9bfb59bb4fd19a4ecf/fastapi_users_db_sqlalchemy-7.0.0-py3-none-any.whl", hash = "sha256:5fceac018e7cfa69efc70834dd3035b3de7988eb4274154a0dbe8b14f5aa001e", size = 6891 },
+]
+
 [[package]]
 name = "filelock"
 version = "3.16.1"
@@ -583,11 +617,13 @@ dependencies = [
     { name = "aioboto3" },
     { name = "alembic" },
     { name = "asyncpg" },
+    { name = "faker" },
     { name = "fastapi" },
-    { name = "fastapi-sso" },
-    { name = "fastapi-users" },
+    { name = "fastapi-storages" },
+    { name = "fastapi-users", extra = ["oauth", "redis", "sqlalchemy"] },
     { name = "gunicorn" },
     { name = "httpx" },
+    { name = "httpx-oauth" },
     { name = "pre-commit" },
     { name = "pydantic" },
     { name = "pydantic-settings" },
@@ -604,11 +640,13 @@ requires-dist = [
     { name = "aioboto3", specifier = ">=13.4.0" },
     { name = "alembic", specifier = ">=1.14.1" },
     { name = "asyncpg", specifier = ">=0.30.0" },
+    { name = "faker", specifier = ">=33.3.1" },
     { name = "fastapi", specifier = ">=0.115.6" },
-    { name = "fastapi-sso", specifier = ">=0.17.0" },
-    { name = "fastapi-users", specifier = ">=14.0.1" },
+    { name = "fastapi-storages", specifier = ">=0.3.0" },
+    { name = "fastapi-users", extras = ["oauth", "redis", "sqlalchemy"], specifier = ">=14.0.1" },
     { name = "gunicorn", specifier = ">=23.0.0" },
     { name = "httpx", specifier = ">=0.28.1" },
+    { name = "httpx-oauth", specifier = ">=0.16.1" },
     { name = "pre-commit", specifier = ">=4.0.1" },
     { name = "pydantic", specifier = ">=2.10.5" },
     { name = "pydantic-settings", specifier = ">=2.7.1" },
@@ -787,6 +825,18 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/b1/df/48c586a5fe32a0f01324ee087459e112ebb7224f646c0b5023f5e79e9956/httpx-0.28.1.tar.gz", hash = "sha256:75e98c5f16b0f35b567856f597f06ff2270a374470a5c2392242528e3e3e42fc", size = 141406 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/2a/39/e50c7c3a983047577ee07d2a9e53faf5a69493943ec3f6a384bdc792deb2/httpx-0.28.1-py3-none-any.whl", hash = "sha256:d909fcccc110f8c7faf814ca82a9a4d816bc5a6dbfea25d6591d6985b8ba59ad", size = 73517 },
+]
+
+[[package]]
+name = "httpx-oauth"
+version = "0.16.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "httpx" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/2f/07/db4ad128da3926be22eec586aa87dafd8840c9eb03fe88505fbed016b5c6/httpx_oauth-0.16.1.tar.gz", hash = "sha256:7402f061f860abc092ea4f5c90acfc576a40bbb79633c1d2920f1ca282c296ee", size = 44148 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/45/4b/2b81e876abf77b4af3372aff731f4f6722840ebc7dcfd85778eaba271733/httpx_oauth-0.16.1-py3-none-any.whl", hash = "sha256:2fcad82f80f28d0473a0fc4b4eda223dc952050af7e3a8c8781342d850f09fb5", size = 38056 },
 ]
 
 [[package]]
@@ -986,15 +1036,6 @@ wheels = [
 ]
 
 [[package]]
-name = "oauthlib"
-version = "3.2.2"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/6d/fa/fbf4001037904031639e6bfbfc02badfc7e12f137a8afa254df6c4c8a670/oauthlib-3.2.2.tar.gz", hash = "sha256:9859c40929662bec5d64f34d01c99e093149682a3f38915dc0655d5a633dd918", size = 177352 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/7e/80/cab10959dc1faead58dc8384a781dfbf93cb4d33d50988f7a69f1b7c9bbe/oauthlib-3.2.2-py3-none-any.whl", hash = "sha256:8139f29aac13e25d502680e9e19963e83f16838d48a0d71c287fe40e7067fbca", size = 151688 },
-]
-
-[[package]]
 name = "packaging"
 version = "24.2"
 source = { registry = "https://pypi.org/simple" }
@@ -1148,11 +1189,6 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/6a/c7/ca334c2ef6f2e046b1144fe4bb2a5da8a4c574e7f2ebf7e16b34a6a2fa92/pydantic-2.10.5.tar.gz", hash = "sha256:278b38dbbaec562011d659ee05f63346951b3a248a6f3642e1bc68894ea2b4ff", size = 761287 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/58/26/82663c79010b28eddf29dcdd0ea723439535fa917fce5905885c0e9ba562/pydantic-2.10.5-py3-none-any.whl", hash = "sha256:4dd4e322dbe55472cb7ca7e73f4b63574eecccf2835ffa2af9021ce113c83c53", size = 431426 },
-]
-
-[package.optional-dependencies]
-email = [
-    { name = "email-validator" },
 ]
 
 [[package]]
@@ -1373,6 +1409,18 @@ wheels = [
 ]
 
 [[package]]
+name = "redis"
+version = "5.2.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "async-timeout", marker = "python_full_version < '3.11.3'" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/47/da/d283a37303a995cd36f8b92db85135153dc4f7a8e4441aa827721b442cfb/redis-5.2.1.tar.gz", hash = "sha256:16f2e22dff21d5125e8481515e386711a34cbec50f0e44413dd7d9c060a54e0f", size = 4608355 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/3c/5f/fa26b9b2672cbe30e07d9a5bdf39cf16e3b80b42916757c5f92bca88e4ba/redis-5.2.1-py3-none-any.whl", hash = "sha256:ee7e1056b9aea0f04c6c2ed59452947f34c4940ee025f5dd83e6a6418b6989e4", size = 261502 },
+]
+
+[[package]]
 name = "s3transfer"
 version = "0.11.1"
 source = { registry = "https://pypi.org/simple" }
@@ -1463,6 +1511,11 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/b6/04/fcdd103b6871f2110460b8275d1c4828daa806997b0fa5a01c1cd7fd522d/SQLAlchemy-2.0.37-cp313-cp313-win32.whl", hash = "sha256:293f9ade06b2e68dd03cfb14d49202fac47b7bb94bffcff174568c951fbc7af2", size = 2070746 },
     { url = "https://files.pythonhosted.org/packages/d4/7c/e024719205bdc1465b7b7d3d22ece8e1ad57bc7d76ef6ed78bb5f812634a/SQLAlchemy-2.0.37-cp313-cp313-win_amd64.whl", hash = "sha256:d70f53a0646cc418ca4853da57cf3ddddbccb8c98406791f24426f2dd77fd0e2", size = 2094612 },
     { url = "https://files.pythonhosted.org/packages/3b/36/59cc97c365f2f79ac9f3f51446cae56dfd82c4f2dd98497e6be6de20fb91/SQLAlchemy-2.0.37-py3-none-any.whl", hash = "sha256:a8998bf9f8658bd3839cbc44ddbe982955641863da0c1efe5b00c1ab4f5c16b1", size = 1894113 },
+]
+
+[package.optional-dependencies]
+asyncio = [
+    { name = "greenlet" },
 ]
 
 [[package]]

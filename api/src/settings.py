@@ -4,15 +4,35 @@ from redis.asyncio import Redis
 
 
 class Settings(BaseSettings):
-    DB_NAME: str = Field("postgres")
-    DB_HOST: str = Field("localhost")
-    DB_PORT: str = Field("5432")
-    DB_USER: str = Field("postgres")
-    DB_PASS: str = Field("postgres")
+    BASE_URL: str = "http://localhost:8000"
+
+    DB_NAME: str = "postgres"
+    DB_HOST: str = "localhost"
+    DB_PORT: str = "5432"
+    DB_USER: str = "postgres"
+    DB_PASS: str = "postgres"
 
     redis: Redis | None = Field(default=None, init=False)
-    REDIS_HOST: str = Field("localhost")
-    REDIS_PORT: str = Field("6379")
+    REDIS_HOST: str = "localhost"
+    REDIS_PORT: str = "6379"
+
+    AWS_ACCESS_KEY_ID: str = ""
+    AWS_SECRET_ACCESS_KEY: str = ""
+    AWS_S3_BUCKET_NAME: str = ""
+    AWS_S3_ENDPOINT_URL: str = ""
+    AWS_S3_USE_SSL: bool = False
+    AWS_DEFAULT_ACL: str = ""
+    AWS_QUERYSTRING_AUTH: bool = False
+    AWS_S3_CUSTOM_DOMAIN: str = ""
+
+    GOOGLE_CLIENT_ID: str = ""
+    GOOGLE_CLIENT_SECRET: str = ""
+    LINKEDIN_CLIENT_ID: str = ""
+    LINKEDIN_CLIENT_SECRET: str = ""
+    MICROSOFT_CLIENT_ID: str = ""
+    MICROSOFT_CLIENT_SECRET: str = ""
+
+    SESSION_SECRET: str = "test_secret"
 
     model_config = SettingsConfigDict(env_file="conf/.env", env_file_encoding="utf-8")
 
