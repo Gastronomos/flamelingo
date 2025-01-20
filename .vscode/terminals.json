@@ -1,0 +1,11 @@
+{
+  "autorun": false,
+  "terminals": [
+    {
+      "name": "API",
+      "description": "API",
+      "command": "uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload",
+      "focus": true
+    }
+  ]
+}
