@@ -51,3 +51,7 @@ async def process_json_file(file: UploadFile, create_schema: BaseModel, dao: Bas
         records.append(record_data)
 
     return await dao.add_all(records)
+
+
+def remove_none_values(data):
+    return {key: value for key, value in data.items() if value is not None}

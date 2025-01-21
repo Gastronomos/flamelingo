@@ -2,6 +2,8 @@ from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict
 
+from api.src.schemas.base import Pagination
+
 
 class DisplayLevel(BaseModel):
     id: UUID
@@ -18,4 +20,8 @@ class CreateLevel(BaseModel):
 
 class UpdateLevel(BaseModel):
     stages: int | None = None
+    topic_id: UUID | None = None
+
+
+class SearchLevel(Pagination):
     topic_id: UUID | None = None

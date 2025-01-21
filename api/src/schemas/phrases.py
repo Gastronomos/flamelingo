@@ -2,23 +2,35 @@ from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict
 
+from api.src.schemas.base import Pagination
 
-class DisplayRule(BaseModel):
+
+class DisplayPhrase(BaseModel):
     id: UUID
-    name: str
-    description: str
+    ru: str
+    en: str
+    level: int
     topic_id: UUID
 
     model_config = ConfigDict(from_attributes=True)
 
 
-class CreateRule(BaseModel):
-    name: str
-    description: str
+class CreatePhrase(BaseModel):
+    ru: str
+    en: str
+    level: int
     topic_id: UUID
 
 
-class UpdateRule(BaseModel):
-    name: str | None = None
-    description: str | None = None
+class UpdatePhrase(BaseModel):
+    ru: str | None = None
+    en: str | None = None
+    level: int | None = None
+    topic_id: UUID | None = None
+
+
+class SearchPhrase(Pagination):
+    ru: str | None = None
+    en: str | None = None
+    level: int | None = None
     topic_id: UUID | None = None

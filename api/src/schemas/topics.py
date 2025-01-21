@@ -2,6 +2,8 @@ from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict
 
+from api.src.schemas.base import Pagination
+
 
 class DisplayTopic(BaseModel):
     id: UUID
@@ -19,3 +21,7 @@ class CreateTopic(BaseModel):
 class UpdateTopic(BaseModel):
     name: str | None = None
     description: str | None = None
+
+
+class SearchTopic(Pagination):
+    name: str | None = None

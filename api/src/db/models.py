@@ -81,8 +81,9 @@ class Words(Base):
     id: Mapped[UUID] = mapped_column(GUID, primary_key=True, default=uuid4)
     ru: Mapped[str] = mapped_column(String(length=80), index=True, nullable=False)
     en: Mapped[str] = mapped_column(String(length=80), index=True, nullable=False)
-    level: Mapped[int] = mapped_column(Integer, nullable=False)
-    topic_id: Mapped[UUID] = mapped_column(GUID, ForeignKey("topics.id", ondelete="cascade"), nullable=False)
+    level: Mapped[int] = mapped_column(Integer, index=True, nullable=False)
+    part_of_speech: Mapped[str] = mapped_column(String(length=80), index=True, nullable=False)
+    topic_id: Mapped[UUID] = mapped_column(GUID, ForeignKey("topics.id", ondelete="cascade"), index=True, nullable=False)
 
     topic: Mapped["Topics"] = relationship("Topics", back_populates="words")
 
@@ -93,8 +94,8 @@ class Phrases(Base):
     id: Mapped[UUID] = mapped_column(GUID, primary_key=True, default=uuid4)
     ru: Mapped[str] = mapped_column(Text, index=True, nullable=False)
     en: Mapped[str] = mapped_column(Text, index=True, nullable=False)
-    level: Mapped[int] = mapped_column(Integer, nullable=False)
-    topic_id: Mapped[UUID] = mapped_column(GUID, ForeignKey("topics.id", ondelete="cascade"), nullable=False)
+    level: Mapped[int] = mapped_column(Integer, index=True, nullable=False)
+    topic_id: Mapped[UUID] = mapped_column(GUID, ForeignKey("topics.id", ondelete="cascade"), index=True, nullable=False)
 
     topic: Mapped["Topics"] = relationship("Topics", back_populates="phrases")
 

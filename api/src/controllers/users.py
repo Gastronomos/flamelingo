@@ -1,9 +1,6 @@
 from uuid import UUID
 
-import httpx
-from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile
-from fastapi.responses import RedirectResponse
-from fastapi.testclient import TestClient
+from fastapi import APIRouter, Depends, File, Form, UploadFile
 from fastapi_users import FastAPIUsers
 
 from api.src.auth.manager import get_user_manager
@@ -14,6 +11,7 @@ from api.src.db.models import Users
 from api.src.db.s3 import file_storage
 from api.src.schemas.users import CreateUser, DisplayUser, UpdateUser
 from api.src.settings import settings
+from api.src.utils.utils import remove_none_values
 
 router = APIRouter(tags=["users"], prefix="/users")
 
@@ -57,8 +55,9 @@ async def update_me(
     avatar_id = None
     if avatar:
         avatar_id = file_storage.write(avatar.file, avatar.filename)
-    data = UpdateUser(username=username, avatar_id=avatar_id, password=password).model_dump()
-    async for manager in get_user_manager():
-        data["hashed_password"] = manager.password_helper.hash(password)
-        data.pop("password")
+    data = remove_none_values(UpdateUser(username=username, avatar_id=avatar_id, password=password).model_dump())
+    if password:
+        async for manager in get_user_manager():
+            data["hashed_password"] = manager.password_helper.hash(password)
+            data.pop("password")
     return await UsersDAO.update(user.id, **data)
