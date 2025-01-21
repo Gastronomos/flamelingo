@@ -5,7 +5,7 @@ from faker import Faker
 from fastapi import Depends
 from fastapi_users.db import SQLAlchemyBaseOAuthAccountTableUUID, SQLAlchemyBaseUserTableUUID, SQLAlchemyUserDatabase
 from sqlalchemy import UUID as GUID
-from sqlalchemy import Boolean, Column, DateTime, ForeignKey, String, func
+from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, String, Text, func
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
@@ -50,3 +50,61 @@ class Users(SQLAlchemyBaseUserTableUUID, Base):
 
 async def get_user_db(session: AsyncSession = Depends(get_async_session)):
     yield SQLAlchemyUserDatabase(session, Users, OAuthAccount)
+
+
+class Topics(Base):
+    __tablename__ = "topics"
+
+    id: Mapped[UUID] = mapped_column(GUID, primary_key=True, default=uuid4)
+    name: Mapped[str] = mapped_column(String(length=320), index=True, nullable=False)
+    description: Mapped[str] = mapped_column(Text, nullable=False)
+
+    levels: Mapped[list["Levels"]] = relationship("Levels", back_populates="topic", cascade="all, delete-orphan")
+    words: Mapped[list["Words"]] = relationship("Words", back_populates="topic", cascade="all, delete-orphan")
+    phrases: Mapped[list["Phrases"]] = relationship("Phrases", back_populates="topic", cascade="all, delete-orphan")
+    rules: Mapped[list["Rules"]] = relationship("Rules", back_populates="topic", cascade="all, delete-orphan")
+
+
+class Levels(Base):
+    __tablename__ = "levels"
+
+    id: Mapped[UUID] = mapped_column(GUID, primary_key=True, default=uuid4)
+    stages: Mapped[int] = mapped_column(Integer, nullable=False)
+    topic_id: Mapped[UUID] = mapped_column(GUID, ForeignKey("topics.id", ondelete="cascade"), nullable=False)
+
+    topic: Mapped["Topics"] = relationship("Topics", back_populates="levels")
+
+
+class Words(Base):
+    __tablename__ = "words"
+
+    id: Mapped[UUID] = mapped_column(GUID, primary_key=True, default=uuid4)
+    ru: Mapped[str] = mapped_column(String(length=80), index=True, nullable=False)
+    en: Mapped[str] = mapped_column(String(length=80), index=True, nullable=False)
+    level: Mapped[int] = mapped_column(Integer, nullable=False)
+    topic_id: Mapped[UUID] = mapped_column(GUID, ForeignKey("topics.id", ondelete="cascade"), nullable=False)
+
+    topic: Mapped["Topics"] = relationship("Topics", back_populates="words")
+
+
+class Phrases(Base):
+    __tablename__ = "phrases"
+
+    id: Mapped[UUID] = mapped_column(GUID, primary_key=True, default=uuid4)
+    ru: Mapped[str] = mapped_column(Text, index=True, nullable=False)
+    en: Mapped[str] = mapped_column(Text, index=True, nullable=False)
+    level: Mapped[int] = mapped_column(Integer, nullable=False)
+    topic_id: Mapped[UUID] = mapped_column(GUID, ForeignKey("topics.id", ondelete="cascade"), nullable=False)
+
+    topic: Mapped["Topics"] = relationship("Topics", back_populates="phrases")
+
+
+class Rules(Base):
+    __tablename__ = "rules"
+
+    id: Mapped[UUID] = mapped_column(GUID, primary_key=True, default=uuid4)
+    name: Mapped[str] = mapped_column(String(length=320), index=True, nullable=False)
+    description: Mapped[str] = mapped_column(Text, nullable=False)
+    topic_id: Mapped[UUID] = mapped_column(GUID, ForeignKey("topics.id", ondelete="cascade"), nullable=False)
+
+    topic: Mapped["Topics"] = relationship("Topics", back_populates="rules")
