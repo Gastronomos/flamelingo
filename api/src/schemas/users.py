@@ -2,7 +2,7 @@ from datetime import datetime
 from uuid import UUID
 
 from fastapi_users import schemas
-from pydantic import ConfigDict, EmailStr
+from pydantic import BaseModel, ConfigDict, EmailStr
 
 
 class DisplayUser(schemas.BaseUser[UUID]):
@@ -23,6 +23,7 @@ class CreateUser(schemas.BaseUserCreate):
     password: str
 
 
-class UpdateUser(schemas.BaseUserUpdate):
+class UpdateUser(BaseModel):
     username: str | None = None
     avatar_id: str | None = None
+    password: str | None = None

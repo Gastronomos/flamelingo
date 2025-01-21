@@ -1,2 +1,4 @@
 COOKIE_NAME = "flamelingo_auth"
 COOKIE_MAX_AGE = 3600
+DEFAULT_SENDMAIL_SUBJECT = "Announcement"
+CODE_MAX_AGE = 300

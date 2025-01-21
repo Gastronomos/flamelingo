@@ -30,7 +30,7 @@ class Users(SQLAlchemyBaseUserTableUUID, Base):
     __tablename__ = "user"
 
     id: Mapped[UUID] = mapped_column(GUID, primary_key=True, default=uuid4)
-    username: Mapped[str] = mapped_column(String(length=320), unique=True, index=True, nullable=False)
+    username: Mapped[str] = mapped_column(String(length=320), index=True, nullable=False)
     email: Mapped[str] = mapped_column(String(length=320), unique=True, index=True, nullable=False)
     avatar_id: Mapped[str | None] = mapped_column(String(length=320), default=None, nullable=True)
     hashed_password: Mapped[str | None] = mapped_column(String(length=1024), nullable=True)

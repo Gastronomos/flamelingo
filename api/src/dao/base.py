@@ -1,4 +1,4 @@
-from sqlalchemy import delete, select
+from sqlalchemy import delete, select, update
 from sqlalchemy.orm import selectinload
 
 from api.src.db.config import async_session
@@ -43,8 +43,29 @@ class BaseDAO:
             instances = [cls.model(**row) for row in rows]
             session.add_all(instances)
             await session.commit()
-            await session.refresh(instances)
-            return instances.scalars().all()
+            for instance in instances:
+                await session.refresh(instance)
+            return instances
+
+    @classmethod
+    async def update(cls, id, **data):
+        data = {key: value for key, value in data.items() if value is not None}
+
+        async with async_session() as session:
+            query = (
+                update(cls.model)
+                .filter_by(id=id)
+                .values(**data)
+                .returning(cls.model)
+                .execution_options(synchronize_session="fetch")
+            )
+            result = await session.execute(query)
+            await session.commit()
+
+            updated_instance = result.unique().scalar_one_or_none()
+            if updated_instance:
+                await session.refresh(updated_instance)
+            return updated_instance
 
     @classmethod
     async def delete(cls, **data):

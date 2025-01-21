@@ -6,6 +6,18 @@
       "description": "API",
       "command": "uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload",
       "focus": true
+    },
+    {
+      "name": "Celery",
+      "description": "Celery worker",
+      "command": "celery -A api.src.tasks.tasks:celery worker --loglevel=INFO",
+      "focus": true
+    },
+    {
+      "name": "Flower",
+      "description": "Celery monitoring",
+      "command": "celery -A api.src.tasks.tasks:celery flower",
+      "focus": true
     }
   ]
 }

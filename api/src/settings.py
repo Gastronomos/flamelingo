@@ -1,9 +1,13 @@
+from fastapi.templating import Jinja2Templates
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from redis.asyncio import Redis
 
+from api.src.utils.email import Email
+
 
 class Settings(BaseSettings):
+    DEBUG: bool = True
     BASE_URL: str = "http://localhost:8000"
 
     DB_NAME: str = "postgres"
@@ -34,11 +38,20 @@ class Settings(BaseSettings):
 
     SESSION_SECRET: str = "test_secret"
 
+    SMTP_HOST: str = ""
+    SMTP_PORT: str = ""
+    SMTP_EMAIL: str = ""
+    SMTP_PASSWORD: str = ""
+    email: Email | None = Field(default=None, init=False)
+
+    templates: Jinja2Templates = Jinja2Templates(directory="api/templates")
+
     model_config = SettingsConfigDict(env_file="conf/.env", env_file_encoding="utf-8")
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.redis = Redis(host=self.REDIS_HOST, port=self.REDIS_PORT, decode_responses=True)
+        self.email = Email(self.SMTP_HOST, self.SMTP_PORT, self.SMTP_EMAIL, self.SMTP_PASSWORD, self.SMTP_EMAIL)
 
     @property
     def database_url(self) -> str:
