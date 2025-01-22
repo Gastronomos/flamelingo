@@ -19,3 +19,10 @@ if settings.DEBUG:
     file_storage = FileSystemStorage("./files")
 else:
     file_storage = MainS3Storage()
+
+
+def media_url(media_id):
+    if settings.DEBUG:
+        return media_id[media_id.find("/") :]
+    else:
+        raise NotImplementedError

@@ -1,7 +1,7 @@
 from sqlalchemy import delete, select, update
-from sqlalchemy.orm import selectinload
+from sqlalchemy.orm import Session, selectinload
 
-from api.src.db.config import async_session
+from api.src.db.config import async_session, sync_engine
 
 
 class BaseDAO:
@@ -73,3 +73,9 @@ class BaseDAO:
             query = delete(cls.model).filter_by(**data)
             await session.execute(query)
             await session.commit()
+
+    @classmethod
+    def find_by_id_sync(cls, model_id):
+        """Synchronous version of add method"""
+        with Session(sync_engine) as session:
+            return session.query(cls.model).filter_by(id=model_id).first()

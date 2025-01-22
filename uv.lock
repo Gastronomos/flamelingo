@@ -704,8 +704,10 @@ dependencies = [
     { name = "gunicorn" },
     { name = "httpx" },
     { name = "httpx-oauth" },
+    { name = "itsdangerous" },
     { name = "jinja2" },
     { name = "pre-commit" },
+    { name = "psycopg" },
     { name = "pydantic" },
     { name = "pydantic-settings" },
     { name = "pytest" },
@@ -713,6 +715,7 @@ dependencies = [
     { name = "pytest-mock" },
     { name = "sentry-sdk", extra = ["fastapi"] },
     { name = "sqlalchemy" },
+    { name = "starlette-admin" },
     { name = "uvicorn" },
 ]
 
@@ -730,8 +733,10 @@ requires-dist = [
     { name = "gunicorn", specifier = ">=23.0.0" },
     { name = "httpx", specifier = ">=0.28.1" },
     { name = "httpx-oauth", specifier = ">=0.16.1" },
+    { name = "itsdangerous", specifier = ">=2.2.0" },
     { name = "jinja2", specifier = ">=3.1.5" },
     { name = "pre-commit", specifier = ">=4.0.1" },
+    { name = "psycopg", specifier = ">=3.2.4" },
     { name = "pydantic", specifier = ">=2.10.5" },
     { name = "pydantic-settings", specifier = ">=2.7.1" },
     { name = "pytest", specifier = ">=8.3.4" },
@@ -739,6 +744,7 @@ requires-dist = [
     { name = "pytest-mock", specifier = ">=3.14.0" },
     { name = "sentry-sdk", extras = ["fastapi"], specifier = ">=2.20.0" },
     { name = "sqlalchemy", specifier = ">=2.0.37" },
+    { name = "starlette-admin", specifier = ">=0.14.1" },
     { name = "uvicorn", specifier = ">=0.34.0" },
 ]
 
@@ -973,6 +979,15 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/d7/4b/cbd8e699e64a6f16ca3a8220661b5f83792b3017d0f79807cb8708d33913/iniconfig-2.0.0.tar.gz", hash = "sha256:2d91e135bf72d31a410b17c16da610a82cb55f6b0477d1a902134b24a455b8b3", size = 4646 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/ef/a6/62565a6e1cf69e10f5727360368e451d4b7f58beeac6173dc9db836a5b46/iniconfig-2.0.0-py3-none-any.whl", hash = "sha256:b6a85871a79d2e3b22d2d1b94ac2824226a63c6b741c88f7ae975f18b6778374", size = 5892 },
+]
+
+[[package]]
+name = "itsdangerous"
+version = "2.2.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/9c/cb/8ac0172223afbccb63986cc25049b154ecfb5e85932587206f42317be31d/itsdangerous-2.2.0.tar.gz", hash = "sha256:e0050c0b7da1eea53ffaf149c0cfbb5c6e2e2b69c4bef22c81fa6eb73e5f6173", size = 54410 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/04/96/92447566d16df59b2a776c0fb82dbc4d9e07cd95062562af01e408583fc4/itsdangerous-2.2.0-py3-none-any.whl", hash = "sha256:c6242fc49e35958c8b15141343aa660db5fc54d4f13a1db01a3f5891b98700ef", size = 16234 },
 ]
 
 [[package]]
@@ -1305,6 +1320,19 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/cc/02/5ac83217d522394b6a2e81a2e888167e7ca629ef6569a3f09852d6dcb01a/propcache-0.2.1-cp313-cp313-win32.whl", hash = "sha256:ddfab44e4489bd79bda09d84c430677fc7f0a4939a73d2bba3073036f487a0a6", size = 39472 },
     { url = "https://files.pythonhosted.org/packages/f4/33/d6f5420252a36034bc8a3a01171bc55b4bff5df50d1c63d9caa50693662f/propcache-0.2.1-cp313-cp313-win_amd64.whl", hash = "sha256:556fc6c10989f19a179e4321e5d678db8eb2924131e64652a51fe83e4c3db0e1", size = 43363 },
     { url = "https://files.pythonhosted.org/packages/41/b6/c5319caea262f4821995dca2107483b94a3345d4607ad797c76cb9c36bcc/propcache-0.2.1-py3-none-any.whl", hash = "sha256:52277518d6aae65536e9cea52d4e7fd2f7a66f4aa2d30ed3f2fcea620ace3c54", size = 11818 },
+]
+
+[[package]]
+name = "psycopg"
+version = "3.2.4"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "typing-extensions", marker = "python_full_version < '3.13'" },
+    { name = "tzdata", marker = "sys_platform == 'win32'" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/e0/f2/954b1467b3e2ca5945b83b5e320268be1f4df486c3e8ffc90f4e4b707979/psycopg-3.2.4.tar.gz", hash = "sha256:f26f1346d6bf1ef5f5ef1714dd405c67fb365cfd1c6cea07de1792747b167b92", size = 156109 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/40/49/15114d5f7ee68983f4e1a24d47e75334568960352a07c6f0e796e912685d/psycopg-3.2.4-py3-none-any.whl", hash = "sha256:43665368ccd48180744cab26b74332f46b63b7e06e8ce0775547a3533883d381", size = 198716 },
 ]
 
 [[package]]
@@ -1693,6 +1721,20 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/1a/4c/9b5764bd22eec91c4039ef4c55334e9187085da2d8a2df7bd570869aae18/starlette-0.41.3.tar.gz", hash = "sha256:0e4ab3d16522a255be6b28260b938eae2482f98ce5cc934cb08dce8dc3ba5835", size = 2574159 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/96/00/2b325970b3060c7cecebab6d295afe763365822b1306a12eeab198f74323/starlette-0.41.3-py3-none-any.whl", hash = "sha256:44cedb2b7c77a9de33a8b74b2b90e9f50d11fcf25d8270ea525ad71a25374ff7", size = 73225 },
+]
+
+[[package]]
+name = "starlette-admin"
+version = "0.14.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "jinja2" },
+    { name = "python-multipart" },
+    { name = "starlette" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/c0/6e/8468ace0ee826dc797c77c7076c5294f4abe78debabb8f8ab7c3e137f0b2/starlette_admin-0.14.1.tar.gz", hash = "sha256:45e2baa3b9a8deec7a6e8ca9295123f648bb0d2070abe68f27193c6d5e32cc38", size = 2099705 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/bd/5a/ac9ab9846350b40d73539c9094bf447d7900c586e013011af2a9fe995676/starlette_admin-0.14.1-py3-none-any.whl", hash = "sha256:5b6260d7ed3db455585852d669feb7ed9a8c5f9a1e3d48d21a52912ec37e18f9", size = 2160522 },
 ]
 
 [[package]]

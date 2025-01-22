@@ -25,6 +25,11 @@ class OAuthAccount(SQLAlchemyBaseOAuthAccountTableUUID, Base):
     id: Mapped[UUID] = mapped_column(GUID, primary_key=True, default=uuid4)
     user_id: Mapped[UUID] = mapped_column(GUID, ForeignKey("user.id", ondelete="cascade"), nullable=False)
 
+    user: Mapped["Users"] = relationship("Users", back_populates="oauth_accounts")
+
+    def __str__(self):
+        return f"{self.user_id} {self.oauth_name} Oauth Account"
+
 
 class Users(SQLAlchemyBaseUserTableUUID, Base):
     __tablename__ = "user"
@@ -47,6 +52,9 @@ class Users(SQLAlchemyBaseUserTableUUID, Base):
             fake = Faker()
             self.username = f"{fake.first_name()} {fake.last_name()}"
 
+    def __str__(self):
+        return self.username
+
 
 async def get_user_db(session: AsyncSession = Depends(get_async_session)):
     yield SQLAlchemyUserDatabase(session, Users, OAuthAccount)
@@ -64,6 +72,9 @@ class Topics(Base):
     phrases: Mapped[list["Phrases"]] = relationship("Phrases", back_populates="topic", cascade="all, delete-orphan")
     rules: Mapped[list["Rules"]] = relationship("Rules", back_populates="topic", cascade="all, delete-orphan")
 
+    def __str__(self):
+        return self.name
+
 
 class Levels(Base):
     __tablename__ = "levels"
@@ -73,6 +84,9 @@ class Levels(Base):
     topic_id: Mapped[UUID] = mapped_column(GUID, ForeignKey("topics.id", ondelete="cascade"), nullable=False)
 
     topic: Mapped["Topics"] = relationship("Topics", back_populates="levels")
+
+    def __str__(self):
+        return f"{self.id} {self.stages}"
 
 
 class Words(Base):
@@ -87,6 +101,9 @@ class Words(Base):
 
     topic: Mapped["Topics"] = relationship("Topics", back_populates="words")
 
+    def __str__(self):
+        return f"{self.ru} {self.en}"
+
 
 class Phrases(Base):
     __tablename__ = "phrases"
@@ -99,6 +116,9 @@ class Phrases(Base):
 
     topic: Mapped["Topics"] = relationship("Topics", back_populates="phrases")
 
+    def __str__(self):
+        return f"{self.ru} {self.en}"
+
 
 class Rules(Base):
     __tablename__ = "rules"
@@ -109,3 +129,6 @@ class Rules(Base):
     topic_id: Mapped[UUID] = mapped_column(GUID, ForeignKey("topics.id", ondelete="cascade"), nullable=False)
 
     topic: Mapped["Topics"] = relationship("Topics", back_populates="rules")
+
+    def __str__(self):
+        return self.name
