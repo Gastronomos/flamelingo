@@ -14,7 +14,7 @@ Flamelingo - приложение для изучения языков в игр
 
 ### Обязательные поля
 
-- BASE_URL - URL для редиректов
+- BASE_URL, FLOWER_URL - URL для редиректов
 - DB_NAME, DB_HOST, DB_PORT, DB_USER, DB_PASS - переменные для доступа к базе данных.
 - REDIS_HOST, REDIS_PORT - переменные для доступа к Redis
 - SESSION_SECRET - переменная для шифрования сессий
