@@ -2,7 +2,7 @@ from datetime import datetime
 from uuid import UUID, uuid4
 
 from faker import Faker
-from fastapi import Depends
+from fastapi import Depends, Request
 from fastapi_users.db import SQLAlchemyBaseOAuthAccountTableUUID, SQLAlchemyBaseUserTableUUID, SQLAlchemyUserDatabase
 from sqlalchemy import UUID as GUID
 from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, String, Text, func
@@ -27,7 +27,7 @@ class OAuthAccount(SQLAlchemyBaseOAuthAccountTableUUID, Base):
 
     user: Mapped["Users"] = relationship("Users", back_populates="oauth_accounts")
 
-    def __str__(self):
+    async def __admin_repr__(self, request: Request):
         return f"{self.user_id} {self.oauth_name} Oauth Account"
 
 
@@ -37,7 +37,7 @@ class Users(SQLAlchemyBaseUserTableUUID, Base):
     id: Mapped[UUID] = mapped_column(GUID, primary_key=True, default=uuid4)
     username: Mapped[str] = mapped_column(String(length=320), index=True, nullable=False)
     email: Mapped[str] = mapped_column(String(length=320), unique=True, index=True, nullable=False)
-    avatar_id: Mapped[str | None] = mapped_column(String(length=320), default=None, nullable=True)
+    avatar_id: Mapped[str | None] = mapped_column(String(length=320), default="files/templates/profile.png", nullable=False)
     hashed_password: Mapped[str | None] = mapped_column(String(length=1024), nullable=True)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
     is_superuser: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
@@ -52,7 +52,7 @@ class Users(SQLAlchemyBaseUserTableUUID, Base):
             fake = Faker()
             self.username = f"{fake.first_name()} {fake.last_name()}"
 
-    def __str__(self):
+    async def __admin_repr__(self, request: Request):
         return self.username
 
 
@@ -72,7 +72,7 @@ class Topics(Base):
     phrases: Mapped[list["Phrases"]] = relationship("Phrases", back_populates="topic", cascade="all, delete-orphan")
     rules: Mapped[list["Rules"]] = relationship("Rules", back_populates="topic", cascade="all, delete-orphan")
 
-    def __str__(self):
+    async def __admin_repr__(self, request: Request):
         return self.name
 
 
@@ -85,7 +85,7 @@ class Levels(Base):
 
     topic: Mapped["Topics"] = relationship("Topics", back_populates="levels")
 
-    def __str__(self):
+    async def __admin_repr__(self, request: Request):
         return f"{self.id} {self.stages}"
 
 
@@ -101,7 +101,7 @@ class Words(Base):
 
     topic: Mapped["Topics"] = relationship("Topics", back_populates="words")
 
-    def __str__(self):
+    async def __admin_repr__(self, request: Request):
         return f"{self.ru} {self.en}"
 
 
@@ -116,7 +116,7 @@ class Phrases(Base):
 
     topic: Mapped["Topics"] = relationship("Topics", back_populates="phrases")
 
-    def __str__(self):
+    async def __admin_repr__(self, request: Request):
         return f"{self.ru} {self.en}"
 
 
@@ -130,5 +130,5 @@ class Rules(Base):
 
     topic: Mapped["Topics"] = relationship("Topics", back_populates="rules")
 
-    def __str__(self):
+    async def __admin_repr__(self, request: Request):
         return self.name

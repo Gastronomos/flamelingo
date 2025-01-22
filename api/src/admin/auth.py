@@ -59,6 +59,7 @@ class UsernameAndPasswordProvider(AuthProvider):
                                 httponly=self.transport.cookie_httponly,
                                 samesite=self.transport.cookie_samesite,
                             )
+                            print(response.headers)
                         else:
                             raise NotImplementedError("Only CookieTransport is supported")
                         return response

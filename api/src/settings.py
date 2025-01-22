@@ -8,7 +8,9 @@ from api.src.utils.email import Email
 
 class Settings(BaseSettings):
     DEBUG: bool = True
+
     BASE_URL: str = "http://localhost:8000"
+    FLOWER_URL: str = "http://localhost:5555"
 
     DB_NAME: str = "postgres"
     DB_HOST: str = "localhost"
